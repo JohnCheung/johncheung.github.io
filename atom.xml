@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://johncheung.github.io/"/>
-  <updated>2017-05-28T12:56:20.744Z</updated>
+  <updated>2017-05-28T13:01:29.879Z</updated>
   <id>http://johncheung.github.io/</id>
   
   <author>
@@ -20,54 +20,48 @@
     <link href="http://johncheung.github.io/2017/05/28/Tensorflow/"/>
     <id>http://johncheung.github.io/2017/05/28/Tensorflow/</id>
     <published>2017-05-28T11:55:00.000Z</published>
-    <updated>2017-05-28T12:56:20.744Z</updated>
+    <updated>2017-05-28T13:01:29.879Z</updated>
     
     <content type="html"><![CDATA[<p><em>安装tensorflow（后面简称“tf”）</em>后遇到</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import tensorflow</div><div class="line">... ...</div><div class="line">ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory</div><div class="line">... ...</div><div class="line">ImportError: libcudnn.5: cannot open shared object file: No such file or directory</div><div class="line">... ...</div></pre></td></tr></table></figure>
 <p>这两个报错，这里梳理一下流程。</p>
 <hr>
 <ol>
-<li><p>tf有多个编程语言的lib:Python/Java/C/Go，人生苦短嘛，我选择python-virtualenv。</p>
-<ul>
-<li><p>安装pip和virtualenv：</p>
+<li>tf有多个编程语言的lib:Python/Java/C/Go，人生苦短嘛，我选择python-virtualenv。</li>
+</ol>
+<p>-安装pip和virtualenv：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sudo apt install python-pip python-dev python-virtualenv virtualenv</div></pre></td></tr></table></figure>
-</li>
-<li><p>创建virtualenv环境目录：</p>
+<ul>
+<li>创建virtualenv环境目录：</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$virtualenv --system-site-packages ~/tensorflow/</div></pre></td></tr></table></figure>
+<p>-激活virtualenv环境（有点像chroot)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ source ~/tensorflow/bin/activate # bash, sh, ksh, or zsh</div><div class="line">$ source ~/tensorflow/bin/activate.csh  # csh or tcsh</div></pre></td></tr></table></figure>
+<p>然后你会看到提示符变成这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$</div></pre></td></tr></table></figure>
+<ul>
+<li>在virtualenv下安装tf：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$ pip install --upgrade tensorflow      # for Python 2.7</div><div class="line">(tensorflow)$ pip3 install --upgrade tensorflow     # for Python 3.n</div><div class="line">(tensorflow)$ pip install --upgrade tensorflow-gpu  # for Python 2.7 and GPU</div><div class="line">(tensorflow)$ pip3 install --upgrade tensorflow-gpu # for Python 3.n and GPU</div></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
+<ol>
+<li>tf除了CPU支援外，还有<a href="https://www.tensorflow.org/install/install_linux#nvidia_requirements_to_run_tensorflow_with_gpu_support" target="_blank" rel="external">nvidia GPU的支援</a>，有以下依赖组件要安装：</li>
 </ol>
-<pre><code>- 激活virtualenv环境（有点像chroot)：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ source ~/tensorflow/bin/activate # bash, sh, ksh, or zsh</div><div class="line">$ source ~/tensorflow/bin/activate.csh  # csh or tcsh</div></pre></td></tr></table></figure>
-
-然后你会看到提示符变成这样：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$</div></pre></td></tr></table></figure>
-
-
-- 在virtualenv下安装tf：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$ pip install --upgrade tensorflow      # for Python 2.7</div><div class="line">	(tensorflow)$ pip3 install --upgrade tensorflow     # for Python 3.n</div><div class="line">	(tensorflow)$ pip install --upgrade tensorflow-gpu  # for Python 2.7 and GPU</div><div class="line">	(tensorflow)$ pip3 install --upgrade tensorflow-gpu # for Python 3.n and GPU</div></pre></td></tr></table></figure>
-</code></pre><ol>
-<li><p>tf除了CPU支援外，还有<a href="https://www.tensorflow.org/install/install_linux#nvidia_requirements_to_run_tensorflow_with_gpu_support" target="_blank" rel="external">nvidia GPU的支援</a>，有以下依赖组件要安装：</p>
 <ul>
 <li>Nvidia 显卡驱动</li>
 <li>CUDA® Toolkit 8.0</li>
 <li>cuDNN v5.</li>
 <li>GPU card with CUDA Compute Capability 3.0 or higher</li>
-<li><p>ibcupti-dev library</p>
-<p>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></p>
-</li>
+<li>ibcupti-dev library</li>
 </ul>
-</li>
-<li><p>解决开头的两个errors：</p>
-<p> 在~/.bashrc加入变量LD_LIBRARY_PATH</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64/:/path/to/cudnn/lib64</div></pre></td></tr></table></figure>
-</li>
+<p>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></p>
+<ol>
+<li>解决开头的两个errors：</li>
 </ol>
-<pre><code>如果cudnn版本过高，可以创建一个软链接（应该没什么问题吧）
-
+<p>在~/.bashrc加入变量LD_LIBRARY_PATH</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64/:/path/to/cudnn/lib64</div></pre></td></tr></table></figure>
+<p>如果cudnn版本过高，可以创建一个软链接（应该没什么问题吧）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s libcudnn.so.6.* libcudnn.so.5</div></pre></td></tr></table></figure>
-</code></pre>]]></content>
+]]></content>
     
     <summary type="html">
     

@@ -12,7 +12,7 @@
 <meta property="og:url" content="http://johncheung.github.io/2017/05/28/Tensorflow/index.html">
 <meta property="og:site_name" content="Coobian">
 <meta property="og:description" content="安装tensorflow（后面简称“tf”）后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
-<meta property="og:updated_time" content="2017-05-28T12:56:20.744Z">
+<meta property="og:updated_time" content="2017-05-28T13:01:29.879Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow">
 <meta name="twitter:description" content="安装tensorflow（后面简称“tf”）后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
@@ -53,9 +53,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://johncheung.github.io"></form>
@@ -95,51 +95,45 @@
 <p>这两个报错，这里梳理一下流程。</p>
 <hr>
 <ol>
-<li><p>tf有多个编程语言的lib:Python/Java/C/Go，人生苦短嘛，我选择python-virtualenv。</p>
-<ul>
-<li><p>安装pip和virtualenv：</p>
+<li>tf有多个编程语言的lib:Python/Java/C/Go，人生苦短嘛，我选择python-virtualenv。</li>
+</ol>
+<p>-安装pip和virtualenv：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sudo apt install python-pip python-dev python-virtualenv virtualenv</div></pre></td></tr></table></figure>
-</li>
-<li><p>创建virtualenv环境目录：</p>
+<ul>
+<li>创建virtualenv环境目录：</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$virtualenv --system-site-packages ~/tensorflow/</div></pre></td></tr></table></figure>
+<p>-激活virtualenv环境（有点像chroot)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ source ~/tensorflow/bin/activate # bash, sh, ksh, or zsh</div><div class="line">$ source ~/tensorflow/bin/activate.csh  # csh or tcsh</div></pre></td></tr></table></figure>
+<p>然后你会看到提示符变成这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$</div></pre></td></tr></table></figure>
+<ul>
+<li>在virtualenv下安装tf：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$ pip install --upgrade tensorflow      # for Python 2.7</div><div class="line">(tensorflow)$ pip3 install --upgrade tensorflow     # for Python 3.n</div><div class="line">(tensorflow)$ pip install --upgrade tensorflow-gpu  # for Python 2.7 and GPU</div><div class="line">(tensorflow)$ pip3 install --upgrade tensorflow-gpu # for Python 3.n and GPU</div></pre></td></tr></table></figure>
 </li>
 </ul>
-</li>
+<ol>
+<li>tf除了CPU支援外，还有<a href="https://www.tensorflow.org/install/install_linux#nvidia_requirements_to_run_tensorflow_with_gpu_support" target="_blank" rel="external">nvidia GPU的支援</a>，有以下依赖组件要安装：</li>
 </ol>
-<pre><code>- 激活virtualenv环境（有点像chroot)：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ source ~/tensorflow/bin/activate # bash, sh, ksh, or zsh</div><div class="line">$ source ~/tensorflow/bin/activate.csh  # csh or tcsh</div></pre></td></tr></table></figure>
-
-然后你会看到提示符变成这样：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$</div></pre></td></tr></table></figure>
-
-
-- 在virtualenv下安装tf：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$ pip install --upgrade tensorflow      # for Python 2.7</div><div class="line">	(tensorflow)$ pip3 install --upgrade tensorflow     # for Python 3.n</div><div class="line">	(tensorflow)$ pip install --upgrade tensorflow-gpu  # for Python 2.7 and GPU</div><div class="line">	(tensorflow)$ pip3 install --upgrade tensorflow-gpu # for Python 3.n and GPU</div></pre></td></tr></table></figure>
-</code></pre><ol>
-<li><p>tf除了CPU支援外，还有<a href="https://www.tensorflow.org/install/install_linux#nvidia_requirements_to_run_tensorflow_with_gpu_support" target="_blank" rel="external">nvidia GPU的支援</a>，有以下依赖组件要安装：</p>
 <ul>
 <li>Nvidia 显卡驱动</li>
 <li>CUDA® Toolkit 8.0</li>
 <li>cuDNN v5.</li>
 <li>GPU card with CUDA Compute Capability 3.0 or higher</li>
-<li><p>ibcupti-dev library</p>
-<p>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></p>
-</li>
+<li>ibcupti-dev library</li>
 </ul>
-</li>
-<li><p>解决开头的两个errors：</p>
-<p> 在~/.bashrc加入变量LD_LIBRARY_PATH</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64/:/path/to/cudnn/lib64</div></pre></td></tr></table></figure>
-</li>
+<p>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></p>
+<ol>
+<li>解决开头的两个errors：</li>
 </ol>
-<pre><code>如果cudnn版本过高，可以创建一个软链接（应该没什么问题吧）
-
+<p>在~/.bashrc加入变量LD_LIBRARY_PATH</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64/:/path/to/cudnn/lib64</div></pre></td></tr></table></figure>
+<p>如果cudnn版本过高，可以创建一个软链接（应该没什么问题吧）</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s libcudnn.so.6.* libcudnn.so.5</div></pre></td></tr></table></figure>
-</code></pre>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://johncheung.github.io/2017/05/28/Tensorflow/" data-id="cj38pewf70000fy2o6wzx8laa" class="article-share-link">Partager</a>
+      <a data-url="http://johncheung.github.io/2017/05/28/Tensorflow/" data-id="cj38pewf70000fy2o6wzx8laa" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
@@ -152,7 +146,7 @@
   
   
     <a href="/2017/05/24/《禅与摩托车维修艺术》摘录/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Ancien</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">《禅与摩托车维修艺术》摘录</div>
     </a>
   
@@ -167,7 +161,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Catégories</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/deploy/">deploy</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/notes-marks/">notes & marks</a></li></ul>
     </div>
@@ -177,7 +171,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Mot-clés</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/terminal/">terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a></li></ul>
     </div>
@@ -187,7 +181,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
       <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/tensorflow/" style="font-size: 10px;">tensorflow</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/tmux/" style="font-size: 10px;">tmux</a>
     </div>
@@ -206,7 +200,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
@@ -239,7 +233,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 John Cheung<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
