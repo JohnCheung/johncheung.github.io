@@ -119,12 +119,10 @@
 <li><p>tf除了CPU支援外，还有<a href="https://www.tensorflow.org/install/install_linux#nvidia_requirements_to_run_tensorflow_with_gpu_support" target="_blank" rel="external">nvidia GPU的支援</a>，有以下依赖组件要安装：</p>
 <ul>
 <li>Nvidia 显卡驱动</li>
-<li><p>CUDA® Toolkit 8.0</p>
-<ul>
+<li>CUDA® Toolkit 8.0</li>
 <li>cuDNN v5.</li>
 <li>GPU card with CUDA Compute Capability 3.0 or higher</li>
-<li>ibcupti-dev library</li>
-</ul>
+<li><p>ibcupti-dev library</p>
 <p>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></p>
 </li>
 </ul>
@@ -135,6 +133,7 @@
 </li>
 </ol>
 <pre><code>如果cudnn版本过高，可以创建一个软链接（应该没什么问题吧）
+
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s libcudnn.so.6.* libcudnn.so.5</div></pre></td></tr></table></figure>
 </code></pre>
       

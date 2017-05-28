@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://johncheung.github.io/"/>
-  <updated>2017-05-28T12:44:36.185Z</updated>
+  <updated>2017-05-28T12:56:20.744Z</updated>
   <id>http://johncheung.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://johncheung.github.io/2017/05/28/Tensorflow/"/>
     <id>http://johncheung.github.io/2017/05/28/Tensorflow/</id>
     <published>2017-05-28T11:55:00.000Z</published>
-    <updated>2017-05-28T12:44:36.185Z</updated>
+    <updated>2017-05-28T12:56:20.744Z</updated>
     
     <content type="html"><![CDATA[<p><em>安装tensorflow（后面简称“tf”）</em>后遇到</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import tensorflow</div><div class="line">... ...</div><div class="line">ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory</div><div class="line">... ...</div><div class="line">ImportError: libcudnn.5: cannot open shared object file: No such file or directory</div><div class="line">... ...</div></pre></td></tr></table></figure>
@@ -51,12 +51,10 @@
 <li><p>tf除了CPU支援外，还有<a href="https://www.tensorflow.org/install/install_linux#nvidia_requirements_to_run_tensorflow_with_gpu_support" target="_blank" rel="external">nvidia GPU的支援</a>，有以下依赖组件要安装：</p>
 <ul>
 <li>Nvidia 显卡驱动</li>
-<li><p>CUDA® Toolkit 8.0</p>
-<ul>
+<li>CUDA® Toolkit 8.0</li>
 <li>cuDNN v5.</li>
 <li>GPU card with CUDA Compute Capability 3.0 or higher</li>
-<li>ibcupti-dev library</li>
-</ul>
+<li><p>ibcupti-dev library</p>
 <p>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></p>
 </li>
 </ul>
@@ -67,6 +65,7 @@
 </li>
 </ol>
 <pre><code>如果cudnn版本过高，可以创建一个软链接（应该没什么问题吧）
+
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s libcudnn.so.6.* libcudnn.so.5</div></pre></td></tr></table></figure>
 </code></pre>]]></content>
     
