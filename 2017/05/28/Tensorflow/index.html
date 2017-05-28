@@ -5,17 +5,17 @@
   
   <title>Tensorflow | Coobian</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="安装tensorflow（后面简称“tf”）后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
+  <meta name="description" content="安装tensorflow（后面简称“tf”)后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
 <meta name="keywords" content="tensorflow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tensorflow">
 <meta property="og:url" content="http://johncheung.github.io/2017/05/28/Tensorflow/index.html">
 <meta property="og:site_name" content="Coobian">
-<meta property="og:description" content="安装tensorflow（后面简称“tf”）后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
-<meta property="og:updated_time" content="2017-05-28T13:01:29.879Z">
+<meta property="og:description" content="安装tensorflow（后面简称“tf”)后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
+<meta property="og:updated_time" content="2017-05-28T13:44:10.410Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow">
-<meta name="twitter:description" content="安装tensorflow（后面简称“tf”）后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
+<meta name="twitter:description" content="安装tensorflow（后面简称“tf”)后遇到 123456&amp;gt;&amp;gt;&amp;gt; import tensorflow... ...ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory... ...ImportError: libcudnn.5: cannot open">
   
     <link rel="alternate" href="/atom.xml" title="Coobian" type="application/atom+xml">
   
@@ -90,23 +90,25 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><em>安装tensorflow（后面简称“tf”）</em>后遇到</p>
+        <p><em>安装tensorflow（后面简称“tf”)</em>后遇到</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; import tensorflow</div><div class="line">... ...</div><div class="line">ImportError: libcudart.so.8.0: cannot open shared object file: No such file or directory</div><div class="line">... ...</div><div class="line">ImportError: libcudnn.5: cannot open shared object file: No such file or directory</div><div class="line">... ...</div></pre></td></tr></table></figure>
 <p>这两个报错，这里梳理一下流程。</p>
 <hr>
 <ol>
 <li>tf有多个编程语言的lib:Python/Java/C/Go，人生苦短嘛，我选择python-virtualenv。</li>
 </ol>
-<p>-安装pip和virtualenv：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sudo apt install python-pip python-dev python-virtualenv virtualenv</div></pre></td></tr></table></figure>
 <ul>
-<li>创建virtualenv环境目录：</li>
-</ul>
+<li><p>安装pip和virtualenv：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$sudo apt install python-pip python-dev python-virtualenv virtualenv</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建virtualenv环境目录：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$virtualenv --system-site-packages ~/tensorflow/</div></pre></td></tr></table></figure>
-<p>-激活virtualenv环境（有点像chroot)：</p>
+</li>
+<li><p>激活virtualenv环境（有点像chroot)：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ source ~/tensorflow/bin/activate # bash, sh, ksh, or zsh</div><div class="line">$ source ~/tensorflow/bin/activate.csh  # csh or tcsh</div></pre></td></tr></table></figure>
-<p>然后你会看到提示符变成这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>然后你会看到提示符变成这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$</div></pre></td></tr></table></figure></p>
 <ul>
 <li>在virtualenv下安装tf：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(tensorflow)$ pip install --upgrade tensorflow      # for Python 2.7</div><div class="line">(tensorflow)$ pip3 install --upgrade tensorflow     # for Python 3.n</div><div class="line">(tensorflow)$ pip install --upgrade tensorflow-gpu  # for Python 2.7 and GPU</div><div class="line">(tensorflow)$ pip3 install --upgrade tensorflow-gpu # for Python 3.n and GPU</div></pre></td></tr></table></figure>
 </li>
@@ -119,16 +121,13 @@
 <li>CUDA® Toolkit 8.0</li>
 <li>cuDNN v5.</li>
 <li>GPU card with CUDA Compute Capability 3.0 or higher</li>
-<li>ibcupti-dev library</li>
+<li>ibcupti-dev library<br>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></li>
 </ul>
-<p>突然好想去吃烤肉， 扔链接:<a href="http://docs.nvidia.com/cuda/cuda-installation-guide-linux/#axzz4VZnqTJ2A" target="_blank" rel="external">CUDA TOOLKIT DOCs</a></p>
 <ol>
-<li>解决开头的两个errors：</li>
+<li>解决开头的两个errors：<br>在~/.bashrc加入变量LD_LIBRARY_PATH<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64/:/path/to/cudnn/lib64</div></pre></td></tr></table></figure>
+</li>
 </ol>
-<p>在~/.bashrc加入变量LD_LIBRARY_PATH</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64/:/path/to/cudnn/lib64</div></pre></td></tr></table></figure>
-<p>如果cudnn版本过高，可以创建一个软链接（应该没什么问题吧）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s libcudnn.so.6.* libcudnn.so.5</div></pre></td></tr></table></figure>
+<p>如果cudnn版本过高，可以创建一个软链接(应该没什么问题吧)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ln -s libcudnn.so.6.* libcudnn.so.5</div></pre></td></tr></table></figure></p>
 
       
     </div>
