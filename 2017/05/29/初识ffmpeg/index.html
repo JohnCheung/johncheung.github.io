@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>初识ffmpeg | Coobian</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="FFmpeg is the leading multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play pretty much anything that humans and machines have created.  ffmpeg Tools除了ffmpeg, 还有">
+<meta name="keywords" content="ffmpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识ffmpeg">
+<meta property="og:url" content="http://johncheung.github.io/2017/05/29/初识ffmpeg/index.html">
+<meta property="og:site_name" content="Coobian">
+<meta property="og:description" content="FFmpeg is the leading multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play pretty much anything that humans and machines have created.  ffmpeg Tools除了ffmpeg, 还有">
+<meta property="og:updated_time" content="2017-05-29T02:01:04.029Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识ffmpeg">
+<meta name="twitter:description" content="FFmpeg is the leading multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play pretty much anything that humans and machines have created.  ffmpeg Tools除了ffmpeg, 还有">
+  
+    <link rel="alternate" href="/atom.xml" title="Coobian" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Coobian</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://johncheung.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-初识ffmpeg" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/29/初识ffmpeg/" class="article-date">
+  <time datetime="2017-05-29T01:55:00.000Z" itemprop="datePublished">2017-05-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      初识ffmpeg
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>FFmpeg is the leading multimedia framework, able to <strong>decode</strong>, <strong>encode</strong>, <strong>transcode</strong>, <strong>mux</strong>, <strong>demux</strong>, <strong>stream</strong>, <strong>filter</strong> and <strong>play</strong> pretty much anything that humans and machines have created.</p>
+<p> ffmpeg Tools除了ffmpeg, 还有</p>
+<ul>
+<li>ffplay, 一个基于SDL/ffmpegLib的播放器,</li>
+<li>ffserver, 一个媒体流服务器组件，</li>
+<li>ffprobe,一个媒体流分析软件。<br><em>这个系列值得研究一番</em></li>
+</ul>
+<hr>
+<h2 id="转码一般过程"><a href="#转码一般过程" class="headerlink" title="转码一般过程"></a>转码一般过程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> _______              ______________</div><div class="line">|       |            |              |</div><div class="line">| input |  demuxer   | encoded data |   decoder</div><div class="line">| file  | ---------&gt; | packets      | -----+</div><div class="line">|_______|            |______________|      |</div><div class="line">                                           v</div><div class="line">                                       _________</div><div class="line">                                      |         |</div><div class="line">                                      | decoded |</div><div class="line">                                      | frames  |</div><div class="line">                                      |_________|</div><div class="line"> ________             ______________       |</div><div class="line">|        |           |              |      |</div><div class="line">| output | &lt;-------- | encoded data | &lt;----+</div><div class="line">| file   |   muxer   | packets      |   encoder</div><div class="line">|________|           |______________|</div></pre></td></tr></table></figure>
+<h2 id="简单图像过滤"><a href="#简单图像过滤" class="headerlink" title="简单图像过滤"></a>简单图像过滤</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"> _________                        ______________</div><div class="line">|         |                      |              |</div><div class="line">| decoded |                      | encoded data |</div><div class="line">| frames  |\                   _ | packets      |</div><div class="line">|_________| \                  /||______________|</div><div class="line">             \   __________   /</div><div class="line">  simple     _\||          | /  encoder</div><div class="line">  filtergraph   | filtered |/</div><div class="line">                | frames   |</div><div class="line">                |__________|</div><div class="line"></div><div class="line"> _______        _____________        _______        ________</div><div class="line">|       |      |             |      |       |      |        |</div><div class="line">| input | ---&gt; | deinterlace | ---&gt; | scale | ---&gt; | output |</div><div class="line">|_______|      |_____________|      |_______|      |________|</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="基本的音频转码参数"><a href="#基本的音频转码参数" class="headerlink" title="基本的音频转码参数"></a>基本的音频转码参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">-ar &lt;value&gt; 设置output文件的采样率，一般设置22050, 44100, 48000 Hz.</div><div class="line">-ac &lt;value&gt; 设置音频通道数量.</div><div class="line">-ab &lt;value&gt; audio bitrate value，音频文件的码率. </div><div class="line">    e.g. -ab 128k. 数值越高，音质越好。但前提是源文件质量要高。（国内有些音乐软件资源有SQ,HQ的标识，其实质量并不高）</div><div class="line">-an disable audio</div><div class="line">-acodec 选择音频编码器 e.g. libmp3lame</div><div class="line"></div><div class="line">ffmpeg -i input.wav output.mp3</div><div class="line">ffmpeg -i input.mp3 -b 128k output.ogg #可选参数&quot;-acodec vorbis&quot;，以防无法正常使用</div></pre></td></tr></table></figure>
+<h3 id="基本的视频转码参数"><a href="#基本的视频转码参数" class="headerlink" title="基本的视频转码参数"></a>基本的视频转码参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">-b &lt;value&gt; 码率</div><div class="line">    ffmpeg -i input.avi -b 200k output.avi</div><div class="line">-r &lt;value&gt; 帧速率</div><div class="line">    ffmpeg -i input.mp4 -r 24 output.mp4</div><div class="line">-s &lt;resolution&gt; 分辨率</div><div class="line">    ffmpeg -i input.avi -s 1920x1080 output.avi</div><div class="line">-aspect &lt;ratio&gt; 长宽比</div><div class="line">    ffmpeg -i input.avi -aspect 16:9 output.avi</div><div class="line">-vn disable video</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="输出视频的质量和输入视频一样"><a href="#输出视频的质量和输入视频一样" class="headerlink" title="输出视频的质量和输入视频一样"></a>输出视频的质量和输入视频一样</h5><pre><code>ffmpeg -i input.avi -sameq output.mpg
+</code></pre><h5 id="预设值格式的文件格式"><a href="#预设值格式的文件格式" class="headerlink" title="预设值格式的文件格式"></a>预设值格式的文件格式</h5><pre><code>ffmpeg -i input.avi -target dvd output.mpg
+</code></pre><p>预设格式有:vcd, svcd, dvd, dv, dv50, pal-vcd, ntsc-svcd…etc</p>
+<h5 id="持续输出一段时间-x秒-至output-fmt2"><a href="#持续输出一段时间-x秒-至output-fmt2" class="headerlink" title="持续输出一段时间(x秒)至output.fmt2"></a>持续输出一段时间(x秒)至output.fmt2</h5><pre><code>ffmpeg -i input.fmt1 -t x output.fmt2
+</code></pre><h5 id="webm格式转为mp4"><a href="#webm格式转为mp4" class="headerlink" title="webm格式转为mp4"></a>webm格式转为mp4</h5><pre><code>ffmpeg -fflags +genpts -i 1.webm -r 24 1.mp4   //转换格式的同时更新了时间戳/帧速率
+</code></pre><p>一般转码需求已经够了，如果以后碰到复杂需求的话，会深入展开写一篇。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://johncheung.github.io/2017/05/29/初识ffmpeg/" data-id="cj39heyrw0000lo2opl8na974" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ffmpeg/">ffmpeg</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/05/28/Tensorflow/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Tensorflow</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/deploy/">deploy</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/notes-marks/">notes & marks</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ffmpeg/">ffmpeg</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/terminal/">terminal</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/">tmux</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/tensorflow/" style="font-size: 10px;">tensorflow</a> <a href="/tags/terminal/" style="font-size: 10px;">terminal</a> <a href="/tags/tmux/" style="font-size: 10px;">tmux</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/29/初识ffmpeg/">初识ffmpeg</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/28/Tensorflow/">Tensorflow</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/24/《禅与摩托车维修艺术》摘录/">《禅与摩托车维修艺术》摘录</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/23/初窥Tmux/">初窥Tmux</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/23/念两句诗/">念两句诗</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 John Cheung<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

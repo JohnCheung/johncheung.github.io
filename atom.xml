@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://johncheung.github.io/"/>
-  <updated>2017-05-28T13:44:10.410Z</updated>
+  <updated>2017-05-29T02:01:04.029Z</updated>
   <id>http://johncheung.github.io/</id>
   
   <author>
@@ -14,6 +14,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>初识ffmpeg</title>
+    <link href="http://johncheung.github.io/2017/05/29/%E5%88%9D%E8%AF%86ffmpeg/"/>
+    <id>http://johncheung.github.io/2017/05/29/初识ffmpeg/</id>
+    <published>2017-05-29T01:55:00.000Z</published>
+    <updated>2017-05-29T02:01:04.029Z</updated>
+    
+    <content type="html"><![CDATA[<p>FFmpeg is the leading multimedia framework, able to <strong>decode</strong>, <strong>encode</strong>, <strong>transcode</strong>, <strong>mux</strong>, <strong>demux</strong>, <strong>stream</strong>, <strong>filter</strong> and <strong>play</strong> pretty much anything that humans and machines have created.</p>
+<p> ffmpeg Tools除了ffmpeg, 还有</p>
+<ul>
+<li>ffplay, 一个基于SDL/ffmpegLib的播放器,</li>
+<li>ffserver, 一个媒体流服务器组件，</li>
+<li>ffprobe,一个媒体流分析软件。<br><em>这个系列值得研究一番</em></li>
+</ul>
+<hr>
+<h2 id="转码一般过程"><a href="#转码一般过程" class="headerlink" title="转码一般过程"></a>转码一般过程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> _______              ______________</div><div class="line">|       |            |              |</div><div class="line">| input |  demuxer   | encoded data |   decoder</div><div class="line">| file  | ---------&gt; | packets      | -----+</div><div class="line">|_______|            |______________|      |</div><div class="line">                                           v</div><div class="line">                                       _________</div><div class="line">                                      |         |</div><div class="line">                                      | decoded |</div><div class="line">                                      | frames  |</div><div class="line">                                      |_________|</div><div class="line"> ________             ______________       |</div><div class="line">|        |           |              |      |</div><div class="line">| output | &lt;-------- | encoded data | &lt;----+</div><div class="line">| file   |   muxer   | packets      |   encoder</div><div class="line">|________|           |______________|</div></pre></td></tr></table></figure>
+<h2 id="简单图像过滤"><a href="#简单图像过滤" class="headerlink" title="简单图像过滤"></a>简单图像过滤</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"> _________                        ______________</div><div class="line">|         |                      |              |</div><div class="line">| decoded |                      | encoded data |</div><div class="line">| frames  |\                   _ | packets      |</div><div class="line">|_________| \                  /||______________|</div><div class="line">             \   __________   /</div><div class="line">  simple     _\||          | /  encoder</div><div class="line">  filtergraph   | filtered |/</div><div class="line">                | frames   |</div><div class="line">                |__________|</div><div class="line"></div><div class="line"> _______        _____________        _______        ________</div><div class="line">|       |      |             |      |       |      |        |</div><div class="line">| input | ---&gt; | deinterlace | ---&gt; | scale | ---&gt; | output |</div><div class="line">|_______|      |_____________|      |_______|      |________|</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="基本的音频转码参数"><a href="#基本的音频转码参数" class="headerlink" title="基本的音频转码参数"></a>基本的音频转码参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">-ar &lt;value&gt; 设置output文件的采样率，一般设置22050, 44100, 48000 Hz.</div><div class="line">-ac &lt;value&gt; 设置音频通道数量.</div><div class="line">-ab &lt;value&gt; audio bitrate value，音频文件的码率. </div><div class="line">    e.g. -ab 128k. 数值越高，音质越好。但前提是源文件质量要高。（国内有些音乐软件资源有SQ,HQ的标识，其实质量并不高）</div><div class="line">-an disable audio</div><div class="line">-acodec 选择音频编码器 e.g. libmp3lame</div><div class="line"></div><div class="line">ffmpeg -i input.wav output.mp3</div><div class="line">ffmpeg -i input.mp3 -b 128k output.ogg #可选参数&quot;-acodec vorbis&quot;，以防无法正常使用</div></pre></td></tr></table></figure>
+<h3 id="基本的视频转码参数"><a href="#基本的视频转码参数" class="headerlink" title="基本的视频转码参数"></a>基本的视频转码参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">-b &lt;value&gt; 码率</div><div class="line">    ffmpeg -i input.avi -b 200k output.avi</div><div class="line">-r &lt;value&gt; 帧速率</div><div class="line">    ffmpeg -i input.mp4 -r 24 output.mp4</div><div class="line">-s &lt;resolution&gt; 分辨率</div><div class="line">    ffmpeg -i input.avi -s 1920x1080 output.avi</div><div class="line">-aspect &lt;ratio&gt; 长宽比</div><div class="line">    ffmpeg -i input.avi -aspect 16:9 output.avi</div><div class="line">-vn disable video</div></pre></td></tr></table></figure>
+<hr>
+<h5 id="输出视频的质量和输入视频一样"><a href="#输出视频的质量和输入视频一样" class="headerlink" title="输出视频的质量和输入视频一样"></a>输出视频的质量和输入视频一样</h5><pre><code>ffmpeg -i input.avi -sameq output.mpg
+</code></pre><h5 id="预设值格式的文件格式"><a href="#预设值格式的文件格式" class="headerlink" title="预设值格式的文件格式"></a>预设值格式的文件格式</h5><pre><code>ffmpeg -i input.avi -target dvd output.mpg
+</code></pre><p>预设格式有:vcd, svcd, dvd, dv, dv50, pal-vcd, ntsc-svcd…etc</p>
+<h5 id="持续输出一段时间-x秒-至output-fmt2"><a href="#持续输出一段时间-x秒-至output-fmt2" class="headerlink" title="持续输出一段时间(x秒)至output.fmt2"></a>持续输出一段时间(x秒)至output.fmt2</h5><pre><code>ffmpeg -i input.fmt1 -t x output.fmt2
+</code></pre><h5 id="webm格式转为mp4"><a href="#webm格式转为mp4" class="headerlink" title="webm格式转为mp4"></a>webm格式转为mp4</h5><pre><code>ffmpeg -fflags +genpts -i 1.webm -r 24 1.mp4   //转换格式的同时更新了时间戳/帧速率
+</code></pre><p>一般转码需求已经够了，如果以后碰到复杂需求的话，会深入展开写一篇。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;FFmpeg is the leading multimedia framework, able to &lt;strong&gt;decode&lt;/strong&gt;, &lt;strong&gt;encode&lt;/strong&gt;, &lt;strong&gt;transcode&lt;/strong&gt;, &lt;strong
+    
+    </summary>
+    
+    
+      <category term="ffmpeg" scheme="http://johncheung.github.io/tags/ffmpeg/"/>
+    
+  </entry>
   
   <entry>
     <title>Tensorflow</title>
